@@ -1,34 +1,37 @@
-class BankProgram
+using System;
+using System.Collections.Generic;
+
+class Program
 {
     static void Main(string[] args)
     {
-        BankAccount account = new BankAccount("Student");
-        string option = "";
+        Address address1 = new Address("123 Main St", "New York", "NY", "USA");
+        Customer customer1 = new Customer("Alice Johnson", address1);
 
-        while (option != "4")
-        {
-            Console.WriteLine("\n1. Deposit\n2. Withdraw\n3. Show Balance\n4. Exit");
-            Console.Write("Choose an option: ");
-            option = Console.ReadLine();
+        Address address2 = new Address("45 Maple Rd", "Toronto", "ON", "Canada");
+        Customer customer2 = new Customer("Bob Smith", address2);
 
-            if (option == "1")
-            {
-                Console.Write("Deposit amount: ");
-                decimal amount = Convert.ToDecimal(Console.ReadLine());
-                account.Deposit(amount);
-            }
-            else if (option == "2")
-            {
-                Console.Write("Withdraw amount: ");
-                decimal amount = Convert.ToDecimal(Console.ReadLine());
-                account.Withdraw(amount);
-            }
-            else if (option == "3")
-            {
-                account.ShowBalance();
-            }
-        }
+        Product product1 = new Product("Laptop", "P001", 1000, 1);
+        Product product2 = new Product("Mouse", "P002", 25, 2);
+        Product product3 = new Product("Keyboard", "P003", 50, 1);
 
-        Console.WriteLine("Thank you for banking with us!");
+        Order order1 = new Order(customer1);
+        order1.AddProduct(product1);
+        order1.AddProduct(product2);
+
+        Order order2 = new Order(customer2);
+        order2.AddProduct(product2);
+        order2.AddProduct(product3);
+
+        Console.WriteLine("Order 1:");
+        Console.WriteLine(order1.GetPackingLabel());
+        Console.WriteLine(order1.GetShippingLabel());
+        Console.WriteLine($"Total Price: ${order1.GetTotalCost()}");
+        Console.WriteLine();
+
+        Console.WriteLine("Order 2:");
+        Console.WriteLine(order2.GetPackingLabel());
+        Console.WriteLine(order2.GetShippingLabel());
+        Console.WriteLine($"Total Price: ${order2.GetTotalCost()}");
     }
 }
