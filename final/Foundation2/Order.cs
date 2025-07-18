@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Text;
 
 public class Order
 {
@@ -17,35 +17,29 @@ public class Order
         _products.Add(product);
     }
 
-    public double GetTotalCost()
-    {
-        double total = 0;
-        foreach (var product in _products)
-        {
-            total += product.GetTotalPrice();
-        }
-
-        if (_customer.IsInUSA())
-            total += 5;
-        else
-            total += 35;
-
-        return total;
-    }
-
     public string GetPackingLabel()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.AppendLine("Packing Label:");
+        string label = "Packing Label:\n";
         foreach (var product in _products)
         {
-            sb.AppendLine($"{product.Name} (ID: {product.ProductId})");
+            label += $"- {product.GetName()} (ID: {product.GetProductId()})\n";
         }
-        return sb.ToString();
+        return label;
     }
 
     public string GetShippingLabel()
     {
-        return $"Shipping To:\n{_customer.Name}\n{_customer.GetAddressString()}";
+        return $"Shipping Label:\n{_customer.GetName()}\n{_customer.GetAddress().GetFullAddress()}";
+    }
+
+    public decimal GetTotalCost()
+    {
+        decimal total = 0;
+        foreach (var product in _products)
+        {
+            total += product.GetPrice() * product.GetQuantity();
+        }
+        total += _customer.IsInUSA() ? 5 : 35; // Shipping cost
+        return total;
     }
 }
